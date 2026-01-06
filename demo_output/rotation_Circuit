@@ -1,0 +1,34 @@
+// rotation_Circuit
+digraph {
+	bgcolor=white rankdir=LR
+	label="R1CS Constraint System: Paeth Rotation (45 deg)" labelloc=t
+	n_0 [label="Pixel_In (x,y)" color=blue shape=doublecircle style=solid]
+	n_1 [label="Angle 45" color=black shape=box style=dashed]
+	gate_2 [label="MUL (tan a/2)" fillcolor=orange shape=square style=filled]
+	n_3 [label=Shear_X1 color=black shape=ellipse style=solid]
+	n_0 -> gate_2
+	n_1 -> gate_2
+	gate_2 -> n_3
+	gate_4 [label=ADD fillcolor=orange shape=square style=filled]
+	n_5 [label=Intermediate_1 color=black shape=ellipse style=solid]
+	n_0 -> gate_4
+	n_3 -> gate_4
+	gate_4 -> n_5
+	gate_6 [label="MUL (sin a)" fillcolor=orange shape=square style=filled]
+	n_7 [label=Shear_Y color=black shape=ellipse style=solid]
+	n_5 -> gate_6
+	n_1 -> gate_6
+	gate_6 -> n_7
+	gate_8 [label=ADD fillcolor=orange shape=square style=filled]
+	n_9 [label=Intermediate_2 color=black shape=ellipse style=solid]
+	n_5 -> gate_8
+	n_7 -> gate_8
+	gate_8 -> n_9
+	gate_10 [label="MUL (tan a/2)" fillcolor=orange shape=square style=filled]
+	n_11 [label=Shear_X2 color=black shape=ellipse style=solid]
+	n_9 -> gate_10
+	n_1 -> gate_10
+	gate_10 -> n_11
+	n_12 [label="Pixel_Out (x',y')" color=green shape=doublecircle style=solid]
+	n_11 -> n_12
+}
