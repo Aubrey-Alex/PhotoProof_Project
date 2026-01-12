@@ -142,7 +142,7 @@ class CircuitVisualizer:
             print(f"   📊 [Visualizer] 电路图已生成: {output_path}")
             return output_path
         except Exception as e:
-            print(f"⚠️ [Visualizer] Graphviz 未检测到，已生成原始 dot 文件: {path}.dot")
+            print(f"⚠️ [Visualizer] 未检测到系统级 Graphviz，无法生成可视化电路图，已生成原始 dot 文件: {path}.dot")
             # 如果没有 graphviz，保存源码
             with open(path + ".dot", "w") as f:
                 f.write(self.dot.source)

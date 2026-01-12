@@ -78,7 +78,7 @@ class PhotoProvenance:
         """
         PhotoProvenance._ensure_keys_exist()
         img_hash = PhotoProvenance._compute_image_hash(image)
-        data_to_sign = f"{device_id}:{img_hash}:2024-01-01T12:00:00Z".encode()
+        data_to_sign = f"{device_id}:{img_hash}:2026-01-01T12:00:00Z".encode()
         
         private_key = PhotoProvenance._load_camera_private_key()
         signature_bytes = private_key.sign(
@@ -94,7 +94,7 @@ class PhotoProvenance:
             "type": "camera_attestation",
             "device_id": device_id,
             "content_hash": img_hash,
-            "timestamp": "2024-01-01T12:00:00Z",
+            "timestamp": "2026-01-01T12:00:00Z",
             "signature": signature_bytes.hex()
         }
         return signature

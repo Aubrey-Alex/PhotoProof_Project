@@ -62,3 +62,23 @@
     *   `demo_output/circuits/` 目录：生成的算术电路结构图 (`.dot` 文件和源码文件)。
     *   `demo_output/frames/` 目录：处理后的视频帧 (`.jpg` 文件)。
     *   `keys/` 目录：首次运行时自动生成的RSA密钥文件 (`camera_secret.key`、`camera_public.key`、`verifier_public.key`)。
+
+## 5. 验证流程与电路介绍
+
+### 验证流程概述
+1. **输入处理**: 读取视频，每隔30帧采样关键帧。
+2. **签名生成**: 计算图像SHA-256哈希，使用RSA私钥 (`keys/camera_secret.key`) 签名，建立信任根。
+3. **变换应用**: 执行亮度调节、裁剪、旋转，记录操作日志。
+4. **数学验证**: 检查变换的数学约束（线性变换、空间映射、蒙特卡洛采样）。
+5. **证明验证**: 验证最终图像哈希和RSA签名完整性。
+
+### keys 介绍
+- `camera_secret.key`: RSA私钥，用于签名原始图像。
+- `camera_public.key`: RSA公钥，用于验证签名，确保真实性和完整性。
+- `verifier_public.key`: 验证者公钥（目前与相机公钥相同）。
+
+### 电路介绍
+- **生成方式**: 使用 `CircuitVisualizer` 创建Graphviz有向图，展示亮度线性变换、裁剪坐标映射、旋转Paeth剪切的算术约束。
+- **作用**: 可视化底层验证逻辑，便于理解计算图结构和教学演示。
+- **验证使用**: 实际验证基于Python数学逻辑，**不执行**生成的电路图。电路仅用于可视化，不是运行时验证组件。
+- **注意**：电路可视化（生成图片）需要系统安装[Graphviz工具](https://graphviz.org/download/)，并添加系统环境变量。如果没有，则会生成原始的dot文件。可以使用[Graphviz 在线工具](https://graph.flyte.org/)来查看dot表示的电路图。
