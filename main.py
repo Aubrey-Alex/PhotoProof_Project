@@ -24,6 +24,10 @@ def run_full_stack_demo():
         print(f"❌ 请先在 data 文件夹下放入 test_video.mp4")
         return
     if not os.path.exists(OUTPUT_DIR): os.makedirs(OUTPUT_DIR)
+    circuits_dir = os.path.join(OUTPUT_DIR, "circuits")
+    frames_dir = os.path.join(OUTPUT_DIR, "frames")
+    if not os.path.exists(circuits_dir): os.makedirs(circuits_dir)
+    if not os.path.exists(frames_dir): os.makedirs(frames_dir)
 
     cap = cv2.VideoCapture(VIDEO_PATH)
     verifier = UniversalVerifier()
@@ -56,17 +60,17 @@ def run_full_stack_demo():
                 # 1. Brightness Circuit
                 cv_brit = CircuitVisualizer("Brightness_Logic")
                 cv_brit.build_brightness_circuit(1.0, 50.0)
-                cv_brit.render(OUTPUT_DIR)
+                cv_brit.render(circuits_dir)
                 
                 # 2. Crop Circuit
                 cv_crop = CircuitVisualizer("Crop_Logic")
                 cv_crop.build_crop_circuit(100, 100) # 示例参数
-                cv_crop.render(OUTPUT_DIR)
+                cv_crop.render(circuits_dir)
                 
                 # 3. Rotation Circuit
                 cv_rot = CircuitVisualizer("Rotation_Logic")
                 cv_rot.build_paeth_rotation_circuit(15.0)
-                cv_rot.render(OUTPUT_DIR)
+                cv_rot.render(circuits_dir)
                 
                 HAS_GENERATED_CIRCUITS = True
                 print("[System] 电路图生成完毕，继续执行动态验证...\n")
@@ -121,9 +125,8 @@ def run_full_stack_demo():
             rotated_final = np.array(rotated_pil)
             ops_log.append({"op": "rotate", "params": {"angle": 15}})
             
-            cv2.imwrite(f"{OUTPUT_DIR}/frame_{frame_idx}_final.jpg", cv2.cvtColor(rotated_final, cv2.COLOR_RGB2BGR))
-            
-            # 验证旋转 (Probabilistic)
+            cv2.imwrite(os.path.join(frames_dir, f"frame_{frame_idx}_final.jpg"), cv2.cvtColor(rotated_final, cv2.COLOR_RGB2BGR))
+                        # 验证旋转 (Probabilistic)
             print("   Start Probabilistic Verification (Samples=50)...")
             is_rot_valid, score = verifier.verify_paeth_rotation_probabilistic(cropped_frame, rotated_final, 15.0, samples=50)
             

@@ -4,11 +4,11 @@ import os
 class CircuitVisualizer:
     """
     负责将抽象的数学约束转化为可视化的电路图。
-    这证明了你们确实构建了计算图 (Computation Graph)。
+    构建计算图 (Computation Graph)。
     """
     def __init__(self, transform_type):
         self.name = f"{transform_type}_Circuit"
-        # 创建有向图，设置从左到右布局，显得专业
+        # 创建有向图，设置从左到右布局
         self.dot = graphviz.Digraph(comment=self.name, format='png')
         self.dot.attr(rankdir='LR', bgcolor='white')
         self.node_count = 0
@@ -143,7 +143,7 @@ class CircuitVisualizer:
             return output_path
         except Exception as e:
             print(f"⚠️ [Visualizer] Graphviz 未检测到，已生成原始 dot 文件: {path}.dot")
-            # 如果没有 graphviz，保存源码让用户知道我们干了活
+            # 如果没有 graphviz，保存源码
             with open(path + ".dot", "w") as f:
                 f.write(self.dot.source)
             return path + ".dot"
